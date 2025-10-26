@@ -35,7 +35,16 @@ class Tweet {
     //returns a boolean, whether the text includes any content written by the person tweeting.
     get written():boolean {
         //TODO: identify whether the tweet is written
-        return false;
+        const txt = this.text
+            .replace(/#runkeeper/gi, "")
+            .replace(/https?:\/\/\S+/g, "")
+            .trim();
+        
+        if (txt.startsWith("Just completed a") && txt.endsWith("Check it out!")) {
+            return false;
+        }
+
+        return true;
     }
 
     get writtenText():string {
@@ -43,7 +52,10 @@ class Tweet {
             return "";
         }
         //TODO: parse the written text from the tweet
-        return "";
+        return this.text
+            .replace(/#runkeeper/gi, "")
+            .replace(/https?:\/\/\S+/g, "")
+            .trim();
     }
 
     get activityType():string {

@@ -57,8 +57,8 @@ function parseTweets(runkeeper_tweets) {
 	}
 
 	// percentage helper function
-	function percentageHelper(n) {
-		return math.format((n / numTweets) * 100, {notation: 'fixed', precision: 2}) + '%';
+	function percentageHelper(n, d) {
+		return math.format((n / d) * 100, {notation: 'fixed', precision: 2}) + '%';
 	}
 
 	// update counts
@@ -68,13 +68,18 @@ function parseTweets(runkeeper_tweets) {
 	for (const el of document.querySelectorAll('.miscellaneous')) el.innerText = misc;
 	
 	// update percents
-	for (const el of document.querySelectorAll('.completedEventsPct')) el.innerText = percentageHelper(completed);
-	for (const el of document.querySelectorAll('.liveEventsPct')) el.innerText = percentageHelper(live);
-	for (const el of document.querySelectorAll('.achievementsPct')) el.innerText = percentageHelper(achieve);
-	for (const el of document.querySelectorAll('.miscellaneousPct')) el.innerText = percentageHelper(misc);
+	for (const el of document.querySelectorAll('.completedEventsPct')) el.innerText = percentageHelper(completed, numTweets);
+	for (const el of document.querySelectorAll('.liveEventsPct')) el.innerText = percentageHelper(live, numTweets);
+	for (const el of document.querySelectorAll('.achievementsPct')) el.innerText = percentageHelper(achieve, numTweets);
+	for (const el of document.querySelectorAll('.miscellaneousPct')) el.innerText = percentageHelper(misc, numTweets);
 
-	const sample = "Just completed a 4.87 km run with @Runkeeper. Check it out! #Runkeeper";
-	console.log(sample.toLowerCase().includes("just completed")); // should be true
+	// get written tweets info
+	const completedTweets = tweet_array.filter(t => t.source == 'completed_event');
+	const writtenCompleted = completedTweets.filter(t => t.written).length;
+
+	for (const el of document.querySelectorAll('.completedEvents')) el.innerText = completedTweets.length;
+	for (const el of document.querySelectorAll('.written'))         el.innerText = writtenCompleted;
+	for (const el of document.querySelectorAll('.writtenPct'))      el.innerText = percentageHelper(writtenCompleted, completedTweets.length);	
 
 	
 }
