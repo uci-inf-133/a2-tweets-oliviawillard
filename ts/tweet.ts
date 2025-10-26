@@ -63,14 +63,35 @@ class Tweet {
             return "unknown";
         }
         //TODO: parse the activity type from the text of the tweet
-        return "";
+        const text = this.text.toLowerCase();
+        let parts = text.split(" ");
+        let activity = "other";
+
+        for (let i = 0; i < parts.length; i++) {
+            if (parts[i] == "mi" || parts[i] == "miles" || parts[i] == "km" || parts[i] == "kilometers") {
+                activity = parts[i + 1];
+                break;
+            }
+        }
+        return activity;
     }
 
     get distance():number {
         if(this.source != 'completed_event') {
             return 0;
         }
+
         //TODO: prase the distance from the text of the tweet
+        const text = this.text.toLowerCase();
+        const parts = text.split(" ");
+        
+        for (let i = 0; i < parts.length; i++) {
+            const num = parseFloat(parts[i]);
+            if (!isNaN(num)) {
+                if (parts[i + 1] == "mi" || parts[i + 1] == "miles") return num;
+                if (parts[i + 1] == "km" || parts[i + 1] == "kilometers") return num / 1.609;
+            }
+        }
         return 0;
     }
 
