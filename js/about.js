@@ -40,6 +40,42 @@ function parseTweets(runkeeper_tweets) {
 
 	console.log("Earliest tweet v2:", earliestText);
 	console.log("Latest tweet:", latestText);
+
+	// count categories
+	let completed = 0, live = 0, achieve = 0, misc = 0;
+	for (const t of tweet_array) {
+		const s = t.source;
+		if (s == 'completed_event') {
+			completed++;
+		} else if (s == 'live_event') {
+			live++;
+		} else if (s == 'achievement') {
+			achieve++;
+		} else {
+			misc++;
+		}
+	}
+
+	// percentage helper function
+	function percentageHelper(n) {
+		return math.format((n / numTweets) * 100, {notation: 'fixed', precision: 2}) + '%';
+	}
+
+	// update counts
+	for (const el of document.querySelectorAll('.completedEvents')) el.innerText = completed;
+	for (const el of document.querySelectorAll('.liveEvents')) el.innerText = live;
+	for (const el of document.querySelectorAll('.achievements')) el.innerText = achieve;
+	for (const el of document.querySelectorAll('.miscellaneous')) el.innerText = misc;
+	
+	// update percents
+	for (const el of document.querySelectorAll('.completedEventsPct')) el.innerText = percentageHelper(completed);
+	for (const el of document.querySelectorAll('.liveEventsPct')) el.innerText = percentageHelper(live);
+	for (const el of document.querySelectorAll('.achievementsPct')) el.innerText = percentageHelper(achieve);
+	for (const el of document.querySelectorAll('.miscellaneousPct')) el.innerText = percentageHelper(misc);
+
+	const sample = "Just completed a 4.87 km run with @Runkeeper. Check it out! #Runkeeper";
+	console.log(sample.toLowerCase().includes("just completed")); // should be true
+
 	
 }
 
