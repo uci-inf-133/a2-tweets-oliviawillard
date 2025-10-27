@@ -71,7 +71,6 @@ function parseTweets(runkeeper_tweets) {
 		"color": { "field": "activity", "type": "nominal", "title": "activity" }
 	}
 	};
-	//vegaEmbed('#distanceVis', distanceVis, { actions: false });
 
 	const distanceVisAggregated = {
 	"$schema": "https://vega.github.io/schema/vega-lite/v5.json",
@@ -84,6 +83,7 @@ function parseTweets(runkeeper_tweets) {
 	}
 	};
 	
+	vegaEmbed('#distanceVis', distanceVis, { actions: false });
 	
 	const meanGraph = document.getElementById('distanceVisAggregated');
 	const pointGraph = document.getElementById('distanceVis');
@@ -96,7 +96,6 @@ function parseTweets(runkeeper_tweets) {
 			pointGraph.style.display = 'none';
 			this.textContent = 'Show all activities';
 		} else {
-			vegaEmbed('#distanceVis', distanceVis, { actions: false });
 			pointGraph.style.display = '';
 			meanGraph.style.display = 'none';
 			this.textContent = 'Show means';
