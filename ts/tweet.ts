@@ -10,10 +10,13 @@ class Tweet {
 	//returns either 'live_event', 'achievement', 'completed_event', or 'miscellaneous'
     get source():string {
         //TODO: identify whether the source is a live event, an achievement, a completed event, or miscellaneous.
-        const txt = this.text.toLowerCase().replace(/\s+/g, ' ').trim();
+        let txt = this.text.toLowerCase();
+        while (txt.includes("  ")) {        
+            txt = txt.replace("  ", " ");   
+        }
+        txt = txt.trim();
 
-        if (txt.includes("just completed") || txt.includes("finished") || 
-            txt.includes("posted")) {
+        if (txt.includes("just completed") || txt.includes("posted")) {
             return "completed_event";
         }
 

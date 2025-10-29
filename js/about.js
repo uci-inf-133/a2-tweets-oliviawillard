@@ -37,40 +37,52 @@ function parseTweets(runkeeper_tweets) {
 	document.getElementById("firstDate").innerText = firstDate;
 	document.getElementById("lastDate").innerText = lastDate;
 
-	console.log("Earliest tweet v2:", firstDate);
+	console.log("Earliest tweet:", firstDate);
 	console.log("Latest tweet:", lastDate);
 
-	// count categories
-	let completed = 0, live = 0, achieve = 0, misc = 0;
+
+
+	// 4 event category percentage and counts
+	let completedEvents = 0;
+	let liveEvents = 0;
+	let achievementEvents = 0;
+	let miscEvents = 0;
 	for (const t of tweet_array) {
 		const s = t.source;
 		if (s == 'completed_event') {
-			completed++;
+			completedEvents++;
 		} else if (s == 'live_event') {
-			live++;
+			liveEvents++;
 		} else if (s == 'achievement') {
-			achieve++;
+			achievementEvents++;
 		} else {
-			misc++;
+			miscEvents++;
 		}
 	}
 
 	// percentage helper function
 	function percentageHelper(n, d) {
-		return math.format((n / d) * 100, {notation: 'fixed', precision: 2}) + '%';
+		return ((n / d) * 100).toFixed(2) + '%';
+	}
+
+	function updateEventData(eventName, eventValue) {
+		const elements = document.querySelectorAll(eventName);
+		for (let el of elements) {
+			el.innerText = eventValue;
+		}
 	}
 
 	// update counts
-	for (const el of document.querySelectorAll('.completedEvents')) el.innerText = completed;
-	for (const el of document.querySelectorAll('.liveEvents')) el.innerText = live;
-	for (const el of document.querySelectorAll('.achievements')) el.innerText = achieve;
-	for (const el of document.querySelectorAll('.miscellaneous')) el.innerText = misc;
+	updateEventData(".completedEvents", completedEvents);
+	updateEventData(".liveEvents", liveEvents);
+	updateEventData(".achievements", achievementEvents);
+	updateEventData(".miscellaneous", miscEvents);
 	
 	// update percents
-	for (const el of document.querySelectorAll('.completedEventsPct')) el.innerText = percentageHelper(completed, numTweets);
-	for (const el of document.querySelectorAll('.liveEventsPct')) el.innerText = percentageHelper(live, numTweets);
-	for (const el of document.querySelectorAll('.achievementsPct')) el.innerText = percentageHelper(achieve, numTweets);
-	for (const el of document.querySelectorAll('.miscellaneousPct')) el.innerText = percentageHelper(misc, numTweets);
+	updateEventData(".completedEventsPct", percentageHelper(completedEvents, numTweets));
+	updateEventData(".liveEventsPct", percentageHelper(liveEvents, numTweets));
+	updateEventData(".achievementsPct", percentageHelper(achievementEvents, numTweets));
+	updateEventData(".miscellaneousPct", percentageHelper(miscEvents, numTweets));
 
 	// get written tweets info
 	const completedTweets = tweet_array.filter(t => t.source == 'completed_event');
