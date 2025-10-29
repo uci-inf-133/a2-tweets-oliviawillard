@@ -15,13 +15,26 @@ function parseTweets(runkeeper_tweets) {
 
 function addEventHandlerForSearch() {
 	//TODO: Search the written tweets as text is entered into the search box, and add them to the table
-	const box = document.getElementById("textFilter");
+
+	// Part 3.1
+
+	const textBox = document.getElementById("textFilter");
 	const count = document.getElementById("searchCount");
 	const text = document.getElementById("searchText");
 	const table = document.getElementById("tweetTable");
 
-	box.addEventListener("input", function () {
-		const query = box.value.toLowerCase();
+	// Part 3.2
+	
+	textBox.addEventListener("input", function () {
+		const query = textBox.value.toLowerCase();
+		
+		if (query.trim() == "") {
+			count.textContent = "0";
+			text.textContent = "";
+			table.innerHTML = "";
+			return;
+		}
+
 		const results = writtenTweets.filter(t => t.writtenText.toLowerCase().includes(query));
 
 		count.textContent = results.length;

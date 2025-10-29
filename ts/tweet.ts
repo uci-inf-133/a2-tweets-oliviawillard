@@ -55,10 +55,7 @@ class Tweet {
             return "";
         }
         //TODO: parse the written text from the tweet
-        return this.text
-            .replace(/#runkeeper/gi, "")
-            .replace(/https?:\/\/\S+/g, "")
-            .trim();
+        return this.text;
     }
 
     get activityType():string {
