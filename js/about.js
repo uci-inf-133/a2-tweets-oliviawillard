@@ -49,6 +49,7 @@ function parseTweets(runkeeper_tweets) {
 	let liveEvents = 0;
 	let achievementEvents = 0;
 	let miscEvents = 0;
+	
 	for (const t of tweet_array) {
 		const s = t.source;
 		if (s == 'completed_event') {

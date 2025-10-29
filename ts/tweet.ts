@@ -91,8 +91,12 @@ class Tweet {
         for (let i = 0; i < parts.length; i++) {
             const num = parseFloat(parts[i]);
             if (!isNaN(num)) {
-                if (parts[i + 1] == "mi" || parts[i + 1] == "miles") return num;
-                if (parts[i + 1] == "km" || parts[i + 1] == "kilometers") return num / 1.609;
+                if (parts[i + 1] == "mi" || parts[i + 1] == "miles") {
+                    return num;
+                } 
+                if (parts[i + 1] == "km" || parts[i + 1] == "kilometers") {
+                    return num / 1.609;
+                }
             }
         }
         return 0;

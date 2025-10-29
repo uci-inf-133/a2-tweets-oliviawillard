@@ -9,12 +9,16 @@ function parseTweets(runkeeper_tweets) {
 		return new Tweet(tweet.text, tweet.created_at);
 	});
 
-	// count how many of each activity there is
-	let completed = tweet_array.filter(t => t.source == "completed_event"); 
+
+	// Part 2.1
+
+	// activity distribution
+	let completedTweets = tweet_array.filter(t => t.source == "completed_event"); 
 	const counts = {}; 
-	const removeList = ['other', 'mtn', 'nordic', 'chair', 'mysports', 'circuit', 'activity'];
-	completed = completed.filter(t => !removeList.includes(t.activityType));
-	for (const t of completed) { 
+	const removeList = ['mtn', 'nordic', 'chair', 'mysports', 'circuit', 'activity'];
+	
+	completedTweets = completedTweets.filter(t => !removeList.includes(t.activityType));
+	for (const t of completedTweets) { 
 		const type = t.activityType; 
 		if (counts[type]) { 
 			counts[type] += 1; 
@@ -23,16 +27,45 @@ function parseTweets(runkeeper_tweets) {
 		} 
 	} 
 	
+	// get number of activities
 	const numActivities = Object.keys(counts).length; 
 	document.getElementById("numberActivities").textContent = numActivities; 
 	
-	const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]); 
-	document.getElementById("firstMost").textContent = sorted[0][0]; 
-	document.getElementById("secondMost").textContent = sorted[1][0]; 
-	document.getElementById("thirdMost").textContent = sorted[2][0];
+	// get top 3 activities
+	let firstAct = "";
+	let secondAct = "";
+	let thirdAct = "";
+
+	let firstCount = 0;
+	let secondCount = 0;
+	let thirdCount = 0;
+
+	for (let activity in counts) {
+		let count = counts[activity];
+		if (count > firstCount) {
+			thirdAct = secondAct;
+			thirdCount = secondCount;
+			secondAct = firstAct;
+			secondCount = firstCount;
+			firstAct = activity;
+			firstCount = count;
+		} else if (count > secondCount) {
+			thirdAct = secondAct;
+			thirdCount = secondCount;
+			secondAct = activity;
+			secondCount = count;
+		} else if (count > thirdCount) {
+			thirdAct = activity;
+			thirdCount = count;
+		}
+	}
+
+	document.getElementById("firstMost").textContent = firstAct; 
+	document.getElementById("secondMost").textContent = secondAct; 
+	document.getElementById("thirdMost").textContent = thirdAct;
 	
 	// get activity with longest and shortest distance
-	const top3 = [sorted[0][0], sorted[1][0], sorted[2][0]];
+	const top3 = [firstAct, secondAct, thirdAct];
 	const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
 	const perActivityDay = completed.filter(t => top3.includes(t.activityType) && t.distance > 0)

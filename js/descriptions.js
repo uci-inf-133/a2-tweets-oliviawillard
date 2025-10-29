@@ -29,14 +29,14 @@ function addEventHandlerForSearch() {
 		table.innerHTML = "";
 
 		for (let i = 0; i < results.length; i++) {
-		const t = results[i];
-		const row = document.createElement("tr");
-		row.innerHTML = `
-			<th scope="row">${i + 1}</th>
-			<td>${t.activityType}</td>
-			<td>${t.writtenText}</td>
-		`;
-		table.appendChild(row);
+			const t = results[i];
+			const row = document.createElement("tr");
+			row.innerHTML = `
+				<th scope="row">${i + 1}</th>
+				<td>${t.activityType}</td>
+				<td>${t.writtenText}</td>
+			`;
+			table.appendChild(row);
 		}
 	});
 }
