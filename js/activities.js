@@ -64,17 +64,35 @@ function parseTweets(runkeeper_tweets) {
 	document.getElementById("secondMost").textContent = secondAct; 
 	document.getElementById("thirdMost").textContent = thirdAct;
 	
+
+	// Part 2.2
+
 	// get activity with longest and shortest distance
 	const top3 = [firstAct, secondAct, thirdAct];
 	const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
-	const perActivityDay = completed.filter(t => top3.includes(t.activityType) && t.distance > 0)
-							.map(t => ({activity: t.activityType, day: days[t.time.getDay()], distance: t.distance}));
+	let perActivityDay = [];
+	for (const t of completedTweets) {
+		if (top3.includes(t.activityType) && t.distance > 0) {
+			const dayName = days[t.time.getDay()];
+			perActivityDay.push({
+				activity: t.activityType,
+				day: dayName,
+				distance: t.distance
+			});
+		}
+	}
 
-	
+	console.log("help", perActivityDay);
 
 	//TODO: create a new array or manipulate tweet_array to create a graph of the number of tweets containing each type of activity.
-	const countData = Object.entries(counts).map(([activity, count]) => ({ activity, count }));
+	let countData = [];
+	for (let activity in counts) {
+		countData.push({
+			activity: activity,
+			count: counts[activity]
+		});
+	}
 	console.log("countData", countData);
 
 	activity_vis_spec = {
@@ -84,8 +102,15 @@ function parseTweets(runkeeper_tweets) {
 	  	//TODO: Add mark and encoding
 	  "mark" : "bar",
 	  "encoding": {
-		"x": { "field": "activity", "type": "nominal", "sort": "-y", "title": "Activity" },
-		"y": { "field": "count", "type": "quantitative", "title": "Tweet Count" },
+		"x": { 
+			"field": "activity", 
+			"type": "nominal", 
+			"sort": "-y", 
+			"title": "Activity" },
+		"y": { 
+			"field": "count", 
+			"type": "quantitative", 
+			"title": "Tweet Count" },
   		}
 	};
 	vegaEmbed('#activityVis', activity_vis_spec, {actions:false});
@@ -99,8 +124,15 @@ function parseTweets(runkeeper_tweets) {
 	"data": { "values": perActivityDay },
 	"mark": "point",
 	"encoding": {
-		"x": { "field": "day", "type": "ordinal", "sort": days, "title": "time (day)" },
-		"y": { "field": "distance", "type": "quantitative", "title": "distance" },
+		"x": { 
+			"field": "day", 
+			"type": "ordinal", 
+			"sort": days, 
+			"title": "time (day)" },
+		"y": { 
+			"field": "distance", 
+			"type": "quantitative", 
+			"title": "distance" },
 		"color": { "field": "activity", "type": "nominal", "title": "activity" }
 	}
 	};
@@ -110,8 +142,16 @@ function parseTweets(runkeeper_tweets) {
 	"data": { "values": perActivityDay },
 	"mark": "point",
 	"encoding": {
-		"x": { "field": "day", "type": "ordinal", "sort": days, "title": "time (day)" },
-		"y": { "aggregate": "mean", "field": "distance", "type": "quantitative", "title": "distance" },
+		"x": { 
+			"field": "day", 
+			"type": "ordinal", 
+			"sort": days, 
+			"title": "time (day)" },
+		"y": { 
+			"aggregate": "mean", 
+			"field": "distance", 
+			"type": "quantitative", 
+			"title": "distance" },
 		"color": { "field": "activity", "type": "nominal", "title": "activity" }
 	}
 	};
