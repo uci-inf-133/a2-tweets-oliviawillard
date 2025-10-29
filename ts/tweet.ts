@@ -43,7 +43,7 @@ class Tweet {
             .replace(/https?:\/\/\S+/g, "")
             .trim();
         
-        if (txt.startsWith("Just completed a") && txt.endsWith("Check it out!")) {
+        if ((txt.startsWith("Just completed a") || txt.startsWith("Just posted a")) && txt.endsWith("Check it out!")) {
             return false;
         }
 

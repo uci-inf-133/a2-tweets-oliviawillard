@@ -12,6 +12,8 @@ function parseTweets(runkeeper_tweets) {
 	//This line modifies the DOM, searching for the tag with the numberTweets ID and updating the text.
 	//It works correctly, your task is to update the text of the other tags in the HTML file!
 	
+	// Part 1.1
+
 	// get distinct number of tweets
 	const numTweets = tweet_array.length;
 	document.getElementById("numberTweets").innerText = numTweets;
@@ -40,7 +42,7 @@ function parseTweets(runkeeper_tweets) {
 	console.log("Earliest tweet:", firstDate);
 	console.log("Latest tweet:", lastDate);
 
-
+	// Part 1.2
 
 	// 4 event category percentage and counts
 	let completedEvents = 0;
@@ -65,6 +67,7 @@ function parseTweets(runkeeper_tweets) {
 		return ((n / d) * 100).toFixed(2) + '%';
 	}
 
+	// update helper function
 	function updateEventData(eventName, eventValue) {
 		const elements = document.querySelectorAll(eventName);
 		for (let el of elements) {
@@ -72,26 +75,27 @@ function parseTweets(runkeeper_tweets) {
 		}
 	}
 
-	// update counts
+	// update 4 event counts
 	updateEventData(".completedEvents", completedEvents);
 	updateEventData(".liveEvents", liveEvents);
 	updateEventData(".achievements", achievementEvents);
 	updateEventData(".miscellaneous", miscEvents);
 	
-	// update percents
+	// update 4 event percents
 	updateEventData(".completedEventsPct", percentageHelper(completedEvents, numTweets));
 	updateEventData(".liveEventsPct", percentageHelper(liveEvents, numTweets));
 	updateEventData(".achievementsPct", percentageHelper(achievementEvents, numTweets));
 	updateEventData(".miscellaneousPct", percentageHelper(miscEvents, numTweets));
 
+
+	// Part 1.3
+
 	// get written tweets info
 	const completedTweets = tweet_array.filter(t => t.source == 'completed_event');
 	const writtenCompleted = completedTweets.filter(t => t.written).length;
 
-	for (const el of document.querySelectorAll('.completedEvents')) el.innerText = completedTweets.length;
-	for (const el of document.querySelectorAll('.written'))         el.innerText = writtenCompleted;
-	for (const el of document.querySelectorAll('.writtenPct'))      el.innerText = percentageHelper(writtenCompleted, completedTweets.length);	
-
+	updateEventData(".written", writtenCompleted);
+	updateEventData(".writtenPct", percentageHelper(writtenCompleted, completedEvents));
 	
 }
 
